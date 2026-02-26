@@ -40,6 +40,10 @@ local function copy_path(state)
 end
 
 return {
+    {
+        "henry-hsieh/riscv-asm-vim",
+        ft = { "riscv_asm" },
+    },
     { "unblevable/quick-scope" },
     {
 
