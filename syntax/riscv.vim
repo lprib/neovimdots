@@ -14,6 +14,7 @@ syntax case match
 syntax match   riscvComment    /\(#\|\/\/\).*/
 syntax region  riscvComment    start=/\/\*/ end=/\*\//
 syntax match   riscvTodo       /\v\c<(fix(me)?|note[s]?|todo|issue|bug|task)[:]?/ containedin=.*Comment
+syntax match   riscvIdent      /\<[a-zA-Z0-9_-]\+\>/
 " Decimal numbers
 syntax match   riscvNumber     /\<[-]\?\d\+\>/
 " Hex numbers
@@ -21,11 +22,10 @@ syntax match   riscvNumber     /\<-\?0\(x\|X\)[0-9a-fA-F]\+\>/
 syntax region  riscvString     start=/"/ skip=/\\"/ end=/"/
 syntax region  riscvChar       start=/'/ skip=/\\'/ end=/'/
 syntax match   riscvLabelColon /:/ contained
+
 syntax match   riscvLabel      /\w\+:/ contains=riscvLabelColon
-" A reference to a local label using <num>[BF]
 syntax match   riscvLabelRef   /\d\+[bf]/
 
-" Constants
 syntax match   riscvConstant    /\<[A-Z][A-Z0-9_]\+\>/
 
 " Registers
@@ -438,12 +438,13 @@ hi def link riscvChar           Character
 hi def link riscvRegister       Type
 hi def link riscvCSRegister     Function
 hi def link riscvBadRegister    Error
-hi def link riscvLabel          Label
+hi def link riscvLabel          Identifier
 hi def link riscvDirective      Preproc
 hi def link riscvInstruction    Keyword
 hi def link riscvDebug          Debug
 hi def link riscvOption         Identifier
 hi def link riscvLabelRef       Identifier
+hi def link riscvIdent          Identifier
 hi def link riscvConstant       Constant
 
 let b:current_syntax = "riscv"
