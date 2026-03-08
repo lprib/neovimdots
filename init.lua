@@ -87,6 +87,14 @@ end, {silent = true, noremap = true})
 vim.o.background = "dark"
 vim.cmd([[syntax on]])
 
+-- riscv asm
+vim.api.nvim_create_autocmd({"BufNewFile", "BufReadPost"}, {
+  pattern = {"*.S", "*.s"},
+  callback = function()
+    vim.bo.filetype = "riscv"
+  end,
+})
+
 
 -- lsp
 vim.lsp.config.pyright = {
