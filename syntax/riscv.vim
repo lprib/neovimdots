@@ -103,7 +103,7 @@ syntax match   riscvBadRegister /\<\(dscratch[0-1]\($\|\D\)\)\@!dscratch[0-9]\+\
 
 " Assembler directives
 syntax keyword riscvDirective .align .ascii .file .globl .local .comm .common .ident
-syntax keyword riscvDirective .section .size .text .data .rodata .bss .string .asciz .asciiz
+syntax keyword riscvDirective .section .size .text .data .rodata .bss .string .asciz .asciiz .space .zero
 syntax keyword riscvDirective .equ .macro .endm .type .option .byte .2byte .half .short
 syntax keyword riscvDirective .4byte .word .long .8byte .dword .quad .skip
 syntax keyword riscvDirective .dtprelword .dtpreldword .sleb128 .uleb128
