@@ -82,10 +82,14 @@ vim.pack.add( {
 vim.cmd [[colorscheme rose-pine]]
 
 -- MINI PICK
-require('mini.pick').setup({
+local mp = require('mini.pick')
+mp.setup({
     mappings = {
         choose_marked = '<C-q>',
-    }
+    },
+    source = {
+        show = mp.default_show,
+    },
 })
 vim.keymap.set("n", "<C-p>", MiniPick.builtin.files,
     { desc = "pick files" })
