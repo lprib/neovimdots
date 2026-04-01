@@ -1,0 +1,43 @@
+{
+  "plugins": {
+    "mini.pick": {
+      "rev": "fe079c2bd894a5ee70b62f23d819620ef40c4949",
+      "src": "https://github.com/nvim-mini/mini.pick",
+      "version": "'fe079c2bd894a5ee70b62f23d819620ef40c4949'"
+    },
+    "moonfly": {
+      "rev": "d11b3d04cc1cb71a778d67a4df73283a5a6d66f4",
+      "src": "https://github.com/bluz71/vim-moonfly-colors",
+      "version": "'d11b3d04cc1cb71a778d67a4df73283a5a6d66f4'"
+    },
+    "nvim-lspconfig": {
+      "rev": "8e2084bf5e40c79c1f42210a6ef96a0a4793a763",
+      "src": "https://github.com/neovim/nvim-lspconfig"
+    },
+    "nvim-parinfer": {
+      "rev": "82bce5798993f4fe5ced20e74003b492490b4fe8",
+      "src": "https://github.com/gpanders/nvim-parinfer",
+      "version": "'v1.2.0'"
+    },
+    "oil.nvim": {
+      "rev": "975a77cce3c8cb742bc1b3629f4328f5ca977dad",
+      "src": "https://github.com/stevearc/oil.nvim",
+      "version": "'v2.15.0'"
+    },
+    "quick-scope": {
+      "rev": "6cee1d9e0b9ac0fbffeb538d4a5ba9f5628fabbc",
+      "src": "https://github.com/unblevable/quick-scope",
+      "version": "'v2.7.1'"
+    },
+    "rose-pine": {
+      "rev": "f01eac6eedf6197509dde8b66de0263207ee1877",
+      "src": "https://github.com/rose-pine/neovim",
+      "version": "'v3.0.2'"
+    },
+    "vlime": {
+      "rev": "e276e9a6f37d2699a3caa63be19314f5a19a1481",
+      "src": "https://github.com/vlime/vlime",
+      "version": "'e276e9a6f37d2699a3caa63be19314f5a19a1481'"
+    }
+  }
+}
