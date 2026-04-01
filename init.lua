@@ -81,6 +81,14 @@ vim.g.vlime_compiler_policy = { DEBUG = 3 }
 vim.g.vlime_leader = ","
 
 -- LSP
+-- The omnifunc was getting overridden sometimes. Not sure why
+vim.api.nvim_create_autocmd("LspAttach", {
+    callback = function(args)
+        vim.schedule(function()
+            vim.bo[args.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
+        end)
+    end,
+})
 vim.lsp.enable("basedpyright")
 vim.lsp.enable("clangd")
 vim.lsp.enable("rust_analyzer")
