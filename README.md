@@ -1,16 +1,17 @@
 # Liam's NeoVim config
-Using Neovim 10.2
+Neovim 0.12.0. Using only vim.pack.
 
-## Requirements
+This also contains
+- `.tmux.conf`
+- `.inputrc`
+- `.gitconfig`
+
+The script `make-links.sh` will symlink them from here to your home directory.
+
+## External requirements
 - ripgrep
 - language servers
     - clangd
-    - pyright
+    - basedpyright
+    - rust-analyzer
 - probably others I forgot
- 
-## Files
-- `init.lua`: main config file, loads lazy.nvim plugins and settings files
-- `lua/mysettings.lua`: Non-plugin settings. General configuration
-- `lua/lazy_plugin_manager_setup.lua`: Boilerplate to bootstrap lazy.nvim plugin manager
-- `lua/plugins/general.lua`: General plugin configuration
-- `lua/plugins/lsps.lua`: Language server plugin configuration
