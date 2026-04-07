@@ -99,11 +99,34 @@ vim.keymap.set("n", "<Leader>g", MiniPick.builtin.grep_live,
     { desc = "live grep" })
 
 -- OIL
+local function prompt_yank_path()
+    local oil = require("oil")
+    local actions = require("oil.actions")
+    local full_path = vim.fn.fnamemodify(oil.get_current_dir() .. oil.get_cursor_entry().name, ":p")
+    local choices = {
+        { label = "Full path",       modify = ":p" },
+        { label = "CWD relative", modify = ":~:." },
+        { label = "Filename only",   modify = ":t" },
+    }
+    vim.ui.select(choices, {
+        prompt = "Yank path:",
+        format_item = function(item)
+            return item.label .. " (" .. vim.fn.fnamemodify(full_path, item.modify) .. ")"
+        end,
+    }, function(choice)
+        if not choice then return end
+        actions.yank_entry.callback({ modify = choice.modify })
+    end)
+end
+
 require("oil").setup({
     keymaps = {
-        ["Y"] = "actions.yank_entry",
+        ["yp"] = prompt_yank_path,
+        ["Y"] = prompt_yank_path,
         ["<C-r>"] = "actions.refresh",
         ["<Leader>1"] = "actions.close",
+        ["<Tab>"] = "actions.preview",
+        ["?"] = "actions.show_help",
         ["gd"] = {
             desc = "Toggle file detail view",
             callback = function()
@@ -119,8 +142,11 @@ require("oil").setup({
     view_options = {
         show_hidden = true,
     },
+    float = {
+        preview_split = "right",
+    },
 })
-vim.keymap.set("n", "<Leader>1", "<cmd>Oil<CR>",
+vim.keymap.set("n", "<Leader>1", "<cmd>Oil --float<CR>",
     { desc = "open file browser" })
 
 -- PARINFER
