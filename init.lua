@@ -26,6 +26,27 @@ vim.keymap.set("n", "<Leader>h", "<cmd>nohlsearch<cr><cmd>lclose<cr><cmd>cclose<
 vim.keymap.set("n", "<Bslash>", "<C-^>",
     { silent = true, desc = "swap to previous file" })
 
+vim.keymap.set("n", "<Leader>bl", function()
+    local cmd = string.format(
+        "hg annotate -wbBZ -undq -r 'wdir()' -L %s,%d:%d",
+        vim.fn.expand("%"),
+        vim.fn.line("."),
+        vim.fn.line("."))
+    local out = vim.fn.system(cmd)
+    print(vim.trim(out))
+end, { desc = "hg blame current line"})
+
+vim.keymap.set("n", "<Leader>bf", function()
+    local output = vim.fn.systemlist("hg annotate -undql " .. vim.fn.expand("%"))
+    vim.cmd("new")
+    vim.bo.buftype = "nofile"
+    vim.bo.bufhidden = "wipe"
+    vim.bo.swapfile = false
+
+    vim.api.nvim_buf_set_lines(0, 0, -1, false, output)
+    vim.bo.filetype = "hgannotate"
+end, { desc = "hg blame file" })
+
 vim.opt.clipboard = "unnamedplus"
 vim.opt.completeopt = "fuzzy,menu,popup"
 
@@ -91,8 +112,24 @@ mp.setup({
         show = mp.default_show,
     },
 })
-vim.keymap.set("n", "<C-p>", MiniPick.builtin.files,
-    { desc = "pick files" })
+
+-- rg doesn't support mercurial, so we need to DIY if we see a .hg directory
+function files_with_hg()
+    if vim.fn.isdirectory(".hg") == 1 then
+        mp.builtin.cli({ command = { "hg", "files" } }, { source = { name = "Files" } })
+    else mp.builtin.files() end
+end
+
+function files_without_ignore()
+    -- could pass --hidden to rg here to really get all files (including
+    -- .hg+.git blobs etc) but I rarely want that
+    mp.builtin.cli(
+        { command = { "rg", "--files", "--no-ignore",}, },
+        { source = { name = "Files (no ignore)" } })
+end
+
+vim.keymap.set("n", "<C-p>", files_with_hg, { desc = "pick files" })
+vim.keymap.set("n", "<C-P>", files_without_ignore, { desc = "pick files without ignore" })
 vim.keymap.set("n", "<C-k>", function() MiniPick.builtin.files({tool = "fallback"}) end,
     { desc = "pick files (dumb)" })
 vim.keymap.set("n", "<Leader>g", MiniPick.builtin.grep_live,
