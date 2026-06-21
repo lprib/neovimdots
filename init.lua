@@ -4,8 +4,8 @@ vim.g.maplocalleader = ","
 vim.opt.number = true
 vim.opt.relativenumber = true
 
-vim.opt.ts = 4
-vim.opt.sw = 4
+vim.opt.tabstop = 4 -- default tab stop
+vim.opt.shiftwidth = 0 -- 0=fall back to tabstop
 vim.opt.expandtab = true
 
 vim.opt.hlsearch = true
@@ -14,6 +14,35 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.showmatch = true
 vim.opt.confirm = true
+
+vim.opt.clipboard = "unnamedplus"
+vim.opt.completeopt = "fuzzy,menu,popup"
+
+function file_is_in_taitterm(file_path)
+   if file_path == "" then return false end
+   local dir = vim.fs.dirname(file_path)
+   print(dir)
+
+   local match = vim.fs.find("TaitTerm_Application", {
+      path = dir,
+      upward = true,
+      stop = vim.fn.expand("~"),
+   })
+   return #match > 0
+end
+
+local on_taitterm_file_augroup = vim.api.nvim_create_augroup("on_taitterm_file", {})
+vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
+   group = on_taitterm_file_augroup,
+   pattern = "*",
+   callback = function(args)
+      if file_is_in_taitterm(vim.fn.fnamemodify(args.file, ":p")) then
+          -- Put local options for TaitTerm firmware in here
+          vim.opt_local.tabstop = 3
+      end
+   end
+})
+
 
 vim.keymap.set("n", ")", "<cmd>cnext<cr>",
     { noremap = true, desc = "next quickfix item" })
@@ -46,9 +75,6 @@ vim.keymap.set("n", "<Leader>bf", function()
     vim.api.nvim_buf_set_lines(0, 0, -1, false, output)
     vim.bo.filetype = "hgannotate"
 end, { desc = "hg blame file" })
-
-vim.opt.clipboard = "unnamedplus"
-vim.opt.completeopt = "fuzzy,menu,popup"
 
 local function try_omni_then_keyword_complete(kw_key)
   if vim.bo.omnifunc ~= "" then
@@ -111,6 +137,20 @@ mp.setup({
     source = {
         show = mp.default_show,
     },
+    window = {
+       config = function()
+          local w = vim.o.columns
+          local h = vim.o.lines
+          return {
+             anchor = "NW",
+             border = "none",
+             row = 0,
+             col = 0,
+             width = w,
+             height = h,
+          }
+       end,
+    },
 })
 
 -- rg doesn't support mercurial, so we need to DIY if we see a .hg directory
@@ -129,11 +169,16 @@ function files_without_ignore()
 end
 
 vim.keymap.set("n", "<C-p>", files_with_hg, { desc = "pick files" })
-vim.keymap.set("n", "<C-P>", files_without_ignore, { desc = "pick files without ignore" })
+vim.keymap.set("n", "<C-q>", files_without_ignore, { desc = "pick files without ignore" })
 vim.keymap.set("n", "<C-k>", function() MiniPick.builtin.files({tool = "fallback"}) end,
     { desc = "pick files (dumb)" })
-vim.keymap.set("n", "<Leader>g", MiniPick.builtin.grep_live,
-    { desc = "live grep" })
+
+vim.keymap.set("n", "<Leader>g",
+    function()
+        MiniPick.builtin.grep_live({globs = { "!bld/**" }})
+    end,
+    { desc = "live grep" }
+)
 
 -- OIL
 local function prompt_yank_path()
