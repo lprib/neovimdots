@@ -57,16 +57,16 @@ vim.keymap.set("n", "<Bslash>", "<C-^>",
 
 vim.keymap.set("n", "<Leader>bl", function()
     local cmd = string.format(
-        "hg annotate -wbBZ -undq -r 'wdir()' -L %s,%d:%d",
-        vim.fn.expand("%"),
-        vim.fn.line("."),
-        vim.fn.line("."))
+        "hg annotate -wbBZ -undq -r 'wdir()' '%s'",
+        vim.fn.expand("%:p"))
     local out = vim.fn.system(cmd)
-    print(vim.trim(out))
+    local lines = vim.split(out, "\n")
+    local line_blame = lines[vim.fn.line(".")] or "No blame available"
+    print(vim.trim(line_blame))
 end, { desc = "hg blame current line"})
 
 vim.keymap.set("n", "<Leader>bf", function()
-    local output = vim.fn.systemlist("hg annotate -undql " .. vim.fn.expand("%"))
+    local output = vim.fn.systemlist("hg annotate -undql " .. vim.fn.expand("%:p"))
     vim.cmd("new")
     vim.bo.buftype = "nofile"
     vim.bo.bufhidden = "wipe"
