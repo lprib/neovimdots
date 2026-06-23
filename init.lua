@@ -5,7 +5,7 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 
 vim.opt.tabstop = 4 -- default tab stop
-vim.opt.shiftwidth = 0 -- 0=fall back to tabstop
+vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 
 vim.opt.hlsearch = true
@@ -39,6 +39,7 @@ vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
       if file_is_in_taitterm(vim.fn.fnamemodify(args.file, ":p")) then
           -- Put local options for TaitTerm firmware in here
           vim.opt_local.tabstop = 3
+          vim.opt_local.shiftwidth = 3
       end
    end
 })
