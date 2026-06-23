@@ -107,7 +107,7 @@ vim.keymap.set("n", "<leader>o", toggle_omni,
     { desc = "toggle omnicomplete" })
 
 -- grepping
-vim.opt.grepprg = "rg --vimgrep" -- by default this uses -uu flag which ignores gitignore
+vim.opt.grepprg = "rg --vimgrep --glob '!bld/**'" -- by default this uses -uu flag which ignores gitignore
 -- <L>s greps for word under cursor
 vim.keymap.set("n", "<Leader>s", "\"jyiw:grep! <C-r><C-w><cr><cmd>cope<cr>",
     { silent = true, desc = "quickfix search word under cursor" })
