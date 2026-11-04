@@ -1,5 +1,10 @@
 {
   "plugins": {
+    "mini.diff": {
+      "rev": "0743d26bd858ebe32efcf5c86a91a422a000f273",
+      "src": "https://github.com/nvim-mini/mini.diff",
+      "version": "'v0.18.0'"
+    },
     "mini.pick": {
       "rev": "fe079c2bd894a5ee70b62f23d819620ef40c4949",
       "src": "https://github.com/nvim-mini/mini.pick",

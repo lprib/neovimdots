@@ -149,6 +149,7 @@ vim.keymap.set("n", "<leader>cc", select_compile_commands, { desc = "Select comp
 vim.pack.add( {
     { src = "https://github.com/unblevable/quick-scope", version = "v2.7.1", },
     { src = "https://github.com/nvim-mini/mini.pick", version = "fe079c2bd894a5ee70b62f23d819620ef40c4949", },
+    { src = "https://github.com/nvim-mini/mini.diff", version = "v0.18.0", },
     { src = "https://github.com/stevearc/oil.nvim", version = "v2.15.0", },
     { src = "https://github.com/gpanders/nvim-parinfer", version = "v1.2.0", },
     { src = "https://github.com/vlime/vlime", version = "e276e9a6f37d2699a3caa63be19314f5a19a1481", },
@@ -210,6 +211,37 @@ vim.keymap.set("n", "<Leader>g",
     end,
     { desc = "live grep" }
 )
+
+-- MINI DIFF
+-- <Leader>d mercurial diff between working dir and parent
+local hg_source = {
+    name = "hg",
+    attach = function(buf_id)
+        local path = vim.api.nvim_buf_get_name(buf_id)
+        -- `hg cat -r . <file>` as base of diff
+        local res = vim.system({ "hg", "cat", "-r", ".", path },
+            { cwd = vim.fs.dirname(path), text = true }):wait()
+        if res.code ~= 0 then return false end
+        MiniDiff.set_ref_text(buf_id, res.stdout)
+        MiniDiff.toggle_overlay(buf_id) -- show full diff inline, not just number column
+    end,
+}
+
+vim.g.minidiff_disable = true
+require("mini.diff").setup({ source = hg_source })
+
+vim.keymap.set("n", "<Leader>d", function()
+    vim.g.minidiff_disable = not vim.g.minidiff_disable
+    -- apply the new state to buffers already open; buffers opened later are
+    -- handled by mini.diff itself based on vim.g.minidiff_disable
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+        -- loaded buffers backed by a real file (skip help, quickfix, oil, etc.)
+        if vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].buftype == "" then
+            if vim.g.minidiff_disable then MiniDiff.disable(buf) else MiniDiff.enable(buf) end
+        end
+    end
+    vim.notify("diff mode " .. (vim.g.minidiff_disable and "off" or "on"))
+end, { desc = "toggle diff mode" })
 
 -- OIL
 local function prompt_yank_path()
