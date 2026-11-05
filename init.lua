@@ -155,6 +155,7 @@ vim.pack.add( {
     { src = "https://github.com/vlime/vlime", version = "e276e9a6f37d2699a3caa63be19314f5a19a1481", },
     { src = "https://github.com/neovim/nvim-lspconfig", },
     { src = "https://github.com/rose-pine/neovim", version = "v3.0.2", name = "rose-pine" },
+    { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "610734c5d3e59761d5f79318d120633374537fa5", },
 })
 
 -- COLORSCHEME
@@ -298,6 +299,14 @@ vim.keymap.set("n", "<Leader>1", "<cmd>Oil --float<CR>",
 -- PARINFER
 vim.keymap.set("n", "<Leader>pi", "<cmd>ParinferToggle<CR>",
     { desc = "toggle parinfer" })
+
+-- TREESITTER
+-- parsers are built with the tree-sitter CLI (~/.local/bin/tree-sitter); no-op if already installed
+require("nvim-treesitter").install({ "cpp" })
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "cpp",
+    callback = function() vim.treesitter.start() end,
+})
 
 -- VLIME
 vim.g.vlime_compiler_policy = { DEBUG = 3 }

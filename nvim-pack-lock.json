@@ -24,6 +24,11 @@
       "src": "https://github.com/gpanders/nvim-parinfer",
       "version": "'v1.2.0'"
     },
+    "nvim-treesitter": {
+      "rev": "610734c5d3e59761d5f79318d120633374537fa5",
+      "src": "https://github.com/nvim-treesitter/nvim-treesitter",
+      "version": "'610734c5d3e59761d5f79318d120633374537fa5'"
+    },
     "oil.nvim": {
       "rev": "975a77cce3c8cb742bc1b3629f4328f5ca977dad",
       "src": "https://github.com/stevearc/oil.nvim",
