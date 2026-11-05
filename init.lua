@@ -158,7 +158,8 @@ vim.pack.add( {
 })
 
 -- COLORSCHEME
-vim.cmd [[colorscheme rose-pine]]
+-- vim.cmd [[colorscheme rose-pine]]
+vim.cmd [[colorscheme theme]]
 
 -- MINI PICK
 local mp = require('mini.pick')
@@ -315,3 +316,13 @@ vim.lsp.enable("basedpyright")
 vim.lsp.enable("clangd")
 vim.lsp.enable("rust_analyzer")
 vim.lsp.enable("roslyn_ls")
+
+-- <Leader>l switches the current buffer between LSP semantic highlighting
+-- and treesitter highlighting
+vim.keymap.set("n", "<Leader>l", function()
+    local enable = not vim.lsp.semantic_tokens.is_enabled({ bufnr = 0 })
+    vim.lsp.semantic_tokens.enable(enable, { bufnr = 0 })
+    -- no parser for this filetype -> pcall fails quietly, regex syntax stays
+    if not enable then pcall(vim.treesitter.start) end
+    vim.notify("LSP highlighting " .. (enable and "on" or "off"))
+end, { desc = "toggle LSP highlighting in current buffer" })
