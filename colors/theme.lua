@@ -62,3 +62,11 @@ hl("MiniDiffOverAdd",     { fg = c.add, bg = c.add_bg })
 hl("MiniDiffOverChange",  { fg = c.change, bg = c.change_bg })
 hl("MiniDiffOverDelete",  { fg = c.delete, bg = c.delete_bg })
 hl("MiniDiffOverContext", { bg = c.context_bg })
+
+-- quickfix
+hl("qfFileName",   { fg = c.fg })
+hl("qfLineNr",     { fg = c.constant })
+hl("qfSeparator1", { fg = c.punct })
+hl("qfSeparator2", { fg = c.punct })
+hl("qfText",       { fg = c.definition })
+hl("QuickFixLine", { bg = c.context_bg })
