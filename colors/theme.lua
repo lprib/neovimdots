@@ -4,9 +4,9 @@ local c = {
     fg         = "#CECECE",
     punct      = "#708B8D", -- dimmed punctuation
     keyword    = "#99a4a5", -- a little dimmer than fg
-    string     = "#95CB82",
+    string     = "#DFDF8E",
     constant   = "#CC8BC9", -- numbers, booleans, nil, constants
-    comment    = "#DFDF8E", -- comments are worth reading, so make them bright
+    comment    = "#95CB82",
     definition = "#71ADE7", -- function/method definitions
     -- diffs: text color + a faint tint of it over bg (same layout as rose-pine)
     add        = "#95CB82", add_bg    = "#2F4032",
