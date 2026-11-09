@@ -112,6 +112,26 @@ vim.opt.grepprg = "rg --vimgrep --glob '!bld/**'" -- by default this uses -uu fl
 vim.keymap.set("n", "<Leader>s", "\"jyiw:grep! <C-r><C-w><cr><cmd>cope<cr>",
     { silent = true, desc = "quickfix search word under cursor" })
 
+-- QUICKFIX
+-- collapse directory names in the quickfix list (toggle with <Leader>qp)
+vim.g.qf_short_paths = true
+function qf_text(info)
+    if not vim.g.qf_short_paths then return {} end -- {} = default formatting
+    local items = vim.fn.getqflist({ id = info.id, items = 0 }).items
+    return vim.tbl_map(function(e)
+        return vim.fn.pathshorten(vim.fn.bufname(e.bufnr)) .. "|" .. e.lnum .. "| " .. e.text
+    end, vim.list_slice(items, info.start_idx, info.end_idx))
+end
+vim.o.quickfixtextfunc = "v:lua.qf_text"
+
+vim.keymap.set("n", "<Leader>qp", function()
+    vim.g.qf_short_paths = not vim.g.qf_short_paths
+    vim.fn.setqflist({}, "r", { items = vim.fn.getqflist() }) -- re-render
+end, { desc = "toggle collapsed quickfix paths" })
+
+-- :Cfilter[!] pat keeps (! = removes) entries whose path or text matches pat
+vim.cmd.packadd("cfilter")
+
 -- <L>e toggles diagnostics
 vim.keymap.set( "n", "<Leader>e", function() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end,
     { silent = true, noremap = true, desc = "toggle diagnostics" })
